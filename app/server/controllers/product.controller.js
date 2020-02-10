@@ -131,6 +131,7 @@ module.exports = function (api) {
             })
     };
     const getAllProduct = (req, res) => {
+        console.log(req.token);
         api.models.product.findAll().
             then(productList => {
                 res.send(productList);
