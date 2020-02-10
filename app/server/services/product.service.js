@@ -6,7 +6,7 @@ module.exports = function (api) {
         productController.addProduct(req, res);
     });
     //Edit Product
-    api.app.put(productSrvRout, function (req, res) {
+    api.app.put(productSrvRout + "/:id", function (req, res) {
         productController.editProduct(req, res);
     });
     //Delete Product(s)
