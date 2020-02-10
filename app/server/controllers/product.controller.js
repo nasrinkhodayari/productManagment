@@ -103,9 +103,15 @@ module.exports = function (api) {
 
         api.models.product.destroy({ where: { product_id: req.body.ids } })
             .then(num => {
-                res.send({
-                    message: "Product(s) was deleted successfully!"
-                });
+                if (num === 0) {
+                    res.status(404).send({
+                        message: "Product(s) not found!"
+                    });
+                } else {
+                    res.send({
+                        message: "Product(s) was deleted successfully!"
+                    });
+                }
             })
             .catch(err => {
                 res.status(500).send({

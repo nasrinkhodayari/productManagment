@@ -1,12 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
-    const Merchant = sequelize.define("merchant", {
-        merchant_id: {
+    const Categories = sequelize.define("categories", {
+        categories_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        name: DataTypes.TEXT,
-        description: DataTypes.TEXT,
+        title: DataTypes.TEXT,
+        parent_id:DataTypes.INTEGER,
         createdAt: {
             type: 'TIMESTAMP',
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
@@ -18,5 +18,5 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         }
     });
-    return Merchant;
+    return Categories;
 }

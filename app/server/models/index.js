@@ -1,8 +1,8 @@
-var fs = require("fs");
-var path = require("path");
-var Sequelize = require('sequelize');
-var dbConfig = require('../config/db.config.js')
-var sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, dbConfig);
+let fs = require("fs");
+let path = require("path");
+let Sequelize = require('sequelize');
+let dbConfig = require('../config/db.config.js')
+let dbSequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, dbConfig);
 
 const db = {};
 fs
@@ -11,7 +11,7 @@ fs
     return (file.indexOf(".") !== 0) && (file !== "index.js");
   })
   .forEach(function (file) {
-    var model = sequelize.import(path.join(__dirname, file));
+    let model = dbSequelize.import(path.join(__dirname, file));
     db[model.name] = model;
 
   });
@@ -22,8 +22,8 @@ Object.keys(db).forEach(function (modelName) {
   }
 });
 
-sequelize.sync();
+dbSequelize.sync();
 db.Sequelize = Sequelize;
-db.sequelize = sequelize;
+db.sequelize = dbSequelize;
 
 module.exports = db;
