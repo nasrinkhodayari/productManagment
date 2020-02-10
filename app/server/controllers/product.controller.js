@@ -131,7 +131,6 @@ module.exports = function (api) {
             })
     };
     const getAllProduct = (req, res) => {
-        console.log(req.token);
         api.models.product.findAll().
             then(productList => {
                 res.send(productList);
@@ -139,7 +138,7 @@ module.exports = function (api) {
                 res.status(500).send({
                     message: "Error retrieving the products"
                 });
-            })
+            });
     };
     return {
         addProduct: addProduct,

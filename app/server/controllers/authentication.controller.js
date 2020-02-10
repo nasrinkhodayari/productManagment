@@ -1,8 +1,5 @@
 module.exports = function (api) {
 
-  const jwt = require('jsonwebtoken');
-  const bcrypt = require('bcryptjs');
-
   const login = (req, res) => {
     if (!req.body.username || !req.body.password) {
       //error
@@ -13,10 +10,10 @@ module.exports = function (api) {
     api.models.users.findOne({ username: req.body.username }
     ).then(user => {
       if (user) {
-        let passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+        let passwordIsValid = api.bcrypt.compareSync(req.body.password, user.password);
         if (!passwordIsValid) return res.status(401).send({ auth: false, token: null, message: "username or password is invalid" });
 
-        let token = jwt.sign({ id: user.id }, api.tokenConfig.secret, {
+        let token = api.jwt.sign({ id: user.id }, api.tokenConfig.secret, {
           expiresIn: 3600 // expires in 1 hours
         });
 
@@ -40,16 +37,15 @@ module.exports = function (api) {
       });
     })
   };
-
   const register = (req, res) => {
     api.models.users.create({
       username: req.body.username,
       firstname: req.body.firstname,
       lastname: req.body.lastname,
-      password:  bcrypt.hashSync(req.body.password, 8)
+      password: api.bcrypt.hashSync(req.body.password, 8)
     }).then(user => {
       // create a token
-      let token = jwt.sign({ id: user.id }, api.tokenConfig.secret, {
+      let token = api.jwt.sign({ id: user.id }, api.tokenConfig.secret, {
         expiresIn: 3600 // expires in 1 hours
       });
       res.status(200).send({ auth: true, token: token });

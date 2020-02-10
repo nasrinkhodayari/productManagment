@@ -1,15 +1,7 @@
 const express = require("express");
-const bearerToken = require('express-bearer-token');
 const bodyParser = require("body-parser");
-// const corsMiddleWare = require("cors");
 const app = express();
 
-// const corsOptions = {
-//   origin: "http://localhost:8081"
-// };
-
-app.use(bearerToken());
-// app.use(corsMiddleWare(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -18,13 +10,19 @@ const config = require('./app/server/config/db.config'),
   models = require('./app/server/models'),
   authService = require('./app/server/services/authentication.service'),
   productService = require('./app/server/services/product.service'),
-  tokenConfig = require('./app/server/config/token.config');
+  tokenConfig = require('./app/server/config/token.config'),
+  jwt = require('jsonwebtoken'),
+  bcrypt = require('bcryptjs'),
+  verifyTokenMiddleware = require('./app/server/controllers/middlewares/verifyToken');
 const api = {
   app,
   models,
   validator,
   config,
-  tokenConfig
+  tokenConfig,
+  jwt,
+  bcrypt,
+  verifyTokenMiddleware
 };
 
 
