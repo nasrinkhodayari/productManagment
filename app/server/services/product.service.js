@@ -14,7 +14,7 @@ module.exports = function (api) {
         productController.deleteProduct(req, res);
     });
     //Search Product (by Name)
-    api.app.get(productSrvRout, function (req, res) {
+    api.app.get(productSrvRout + "/:title", function (req, res) {
         productController.searchProduct(req, res);
     });
 }

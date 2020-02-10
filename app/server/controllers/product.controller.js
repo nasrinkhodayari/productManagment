@@ -75,13 +75,13 @@ module.exports = function (api) {
                     }
                 } else {
                     res.send({
-                        message: "Cannot update Product with id=${id}. Maybe Product was not found!"
+                        message: "Cannot update Product. Maybe Product was not found!"
                     });
                 }
             })
             .catch(err => {
                 res.status(500).send({
-                    message: "Error updating Product with id=" + id
+                    message: "Error updating Produc"
                 });
             });
     };
@@ -95,14 +95,13 @@ module.exports = function (api) {
                 });
             }).catch(err => {
                 res.send({
-                    message: "Cannot update Product Image with id=${product_image_id}. Maybe Product Image was not found!"
+                    message: "Cannot update Product Image. Maybe Product Image was not found!"
                 });
             })
     };
     const deleteProduct = (req, res) => {
 
-        // { where: { product_id: req.params.ids } }
-        api.models.product.destroy({ where: { product_id: req.body.ids }})
+        api.models.product.destroy({ where: { product_id: req.body.ids } })
             .then(num => {
                 res.send({
                     message: "Product(s) was deleted successfully!"
@@ -110,12 +109,20 @@ module.exports = function (api) {
             })
             .catch(err => {
                 res.status(500).send({
-                    message: "Could not delete Product with id=" + id
+                    message: "Could not delete Product "
                 });
             });
     };
     const searchProduct = (req, res) => {
-
+        let condition = req.params.title ? { title: { [api.models.Sequelize.Op.like]: `%${req.params.title}%` } } : null;
+        api.models.product.findAll({ where: condition }).
+            then(productList => {
+                res.send(productList);
+            }).catch(err => {
+                res.status(500).send({
+                    message: "Error retrieving the products"
+                });
+            })
     };
 
     return {
