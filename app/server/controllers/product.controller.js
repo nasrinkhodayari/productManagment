@@ -124,11 +124,21 @@ module.exports = function (api) {
                 });
             })
     };
-
+    const getAllProduct = (req, res) => {
+        api.models.product.findAll().
+            then(productList => {
+                res.send(productList);
+            }).catch(err => {
+                res.status(500).send({
+                    message: "Error retrieving the products"
+                });
+            })
+    };
     return {
         addProduct: addProduct,
         editProduct: editProduct,
         deleteProduct: deleteProduct,
-        searchProduct: searchProduct
+        searchProduct: searchProduct,
+        getAllProduct: getAllProduct
     };
 }

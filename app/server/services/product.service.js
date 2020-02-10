@@ -17,4 +17,8 @@ module.exports = function (api) {
     api.app.get(productSrvRout + "/:title", function (req, res) {
         productController.searchProduct(req, res);
     });
+    //GetAll Product
+    api.app.get(productSrvRout, function (req, res) {
+        productController.getAllProduct(req, res);
+    });
 }
