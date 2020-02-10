@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const corsMiddleWare = require("cors");
 const app = express();
 
-var corsOptions = {
+const corsOptions = {
   origin: "http://localhost:8081"
 };
 
@@ -11,11 +11,12 @@ app.use(corsMiddleWare(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-var config = require('./app/server/config/db.config'),
-validator = require('./app/server/controllers/modules/core/validator'),
-models = require('./app/server/models'),
-authService = require('./app/server/services/authentication.service');
-var api = {
+const config = require('./app/server/config/db.config'),
+  validator = require('./app/server/controllers/modules/core/validator'),
+  models = require('./app/server/models'),
+  authService = require('./app/server/services/authentication.service');
+  productService = require('./app/server/services/product.service');
+const api = {
   app,
   models,
   validator,
@@ -32,7 +33,8 @@ const PORT = process.env.PORT || 8080;
 
 // Routes & middlewares
 authService(api);
+productService(api);
 
 app.listen(PORT, () => {
-  console.log("Server is running on port "+PORT);
+  console.log("Server is running on port " + PORT);
 });
