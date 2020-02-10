@@ -99,8 +99,24 @@ module.exports = function (api) {
                 });
             })
     };
-    const deleteProduct = (req, res) => { };
-    const searchProduct = (req, res) => { };
+    const deleteProduct = (req, res) => {
+
+        // { where: { product_id: req.params.ids } }
+        api.models.product.destroy({ where: { product_id: req.body.ids }})
+            .then(num => {
+                res.send({
+                    message: "Product(s) was deleted successfully!"
+                });
+            })
+            .catch(err => {
+                res.status(500).send({
+                    message: "Could not delete Product with id=" + id
+                });
+            });
+    };
+    const searchProduct = (req, res) => {
+
+    };
 
     return {
         addProduct: addProduct,
