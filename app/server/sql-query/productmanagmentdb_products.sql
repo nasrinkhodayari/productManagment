@@ -37,9 +37,9 @@ CREATE TABLE `products` (
   PRIMARY KEY (`product_id`),
   KEY `merchant_id_idx` (`merchant_id`),
   KEY `category_id_idx` (`category_id`,`merchant_id`),
-  CONSTRAINT `category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`),
+  CONSTRAINT `category_id` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`),
   CONSTRAINT `merchant_id` FOREIGN KEY (`merchant_id`) REFERENCES `merchants` (`merchant_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +48,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (103,1,1,'elegant red pump','http://www.lifestylelabels.com/steven-by-steve-madden-pryme-pump.html',299,0,1,'Reebok	Nothing will turn his head faster than you wearing the sexy Pryme pump from Steven by Steve Madden. This daring pump has a pretty patent leather upper with light shirring, a double stitch detail surrounding the collar, and a vampy almond shaped toe.','2020-02-10 00:28:56','2020-02-10 00:28:56');
+INSERT INTO `products` VALUES (125,1,1,' golfs','http://www.lifestylelabels.com/womens-golf-shoes.html',159,0,0,'Sporting with style, this is a durable and super-comfortable golf shoe built for performance.','2020-02-10 10:44:03','2020-02-10 12:02:59'),(126,1,1,'womens golf shoes','http://www.lifestylelabels.com/womens-golf-shoes.html',159,0,0,'Sporting with style, this is a durable and super-comfortable golf shoe built for performance.','2020-02-10 10:44:45','2020-02-10 10:44:45'),(127,1,1,'womens golf shoes','http://www.lifestylelabels.com/womens-golf-shoes.html',159,0,0,'Sporting with style, this is a durable and super-comfortable golf shoe built for performance.','2020-02-10 10:46:03','2020-02-10 10:46:03'),(138,1,1,'mens golf shoes','http://www.lifestylelabels.com/womens-golf-shoes.html',159,0,0,'Sporting with style, this is a durable and super-comfortable golf shoe built for performance.','2020-02-10 14:29:04','2020-02-10 14:29:04');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -61,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-10  1:23:05
+-- Dump completed on 2020-02-11  1:00:48

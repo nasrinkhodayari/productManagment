@@ -16,13 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `category`
+-- Table structure for table `categories`
 --
 
-DROP TABLE IF EXISTS `category`;
+DROP TABLE IF EXISTS `categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `category` (
+CREATE TABLE `categories` (
   `category_id` int NOT NULL AUTO_INCREMENT,
   `parent_id` int DEFAULT NULL,
   `title` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -34,13 +34,13 @@ CREATE TABLE `category` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `category`
+-- Dumping data for table `categories`
 --
 
-LOCK TABLES `category` WRITE;
-/*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,0,'For Women Shoes','2020-02-10 00:28:49','2020-02-10 00:28:49'),(2,1,'Pump','2020-02-10 00:57:55','2020-02-10 00:57:55'),(3,1,'Golf','2020-02-10 00:57:55','2020-02-10 00:57:55'),(4,0,'For Men Shoes','2020-02-10 00:59:16','2020-02-10 00:59:16'),(5,4,'Golf','2020-02-10 00:59:16','2020-02-10 00:59:16');
-/*!40000 ALTER TABLE `category` ENABLE KEYS */;
+LOCK TABLES `categories` WRITE;
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+INSERT INTO `categories` VALUES (1,0,'For Women Shoes','2020-02-10 00:28:49','2020-02-10 00:28:49'),(2,1,'Pump','2020-02-10 00:57:55','2020-02-10 00:57:55'),(3,1,'Golf','2020-02-10 00:57:55','2020-02-10 00:57:55'),(4,0,'For Men Shoes','2020-02-10 00:59:16','2020-02-10 00:59:16'),(5,4,'Golf','2020-02-10 00:59:16','2020-02-10 00:59:16');
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-10  1:23:04
+-- Dump completed on 2020-02-11  1:00:50

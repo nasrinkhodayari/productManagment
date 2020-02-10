@@ -25,13 +25,13 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `password` text COLLATE utf8_unicode_ci NOT NULL,
   `firstname` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `lastname` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Nirsan','Nasrin','Khodayari','123456','2020-02-09 23:33:08','2020-02-09 23:33:08');
+INSERT INTO `users` VALUES (4,'nirsan','$2a$08$4/R0i2YRjJpswgu/yBl1zOYG.DNmwo/T5ymLVZ/u7IDz.y4Mvd/MS','nasrinn','kh','2020-02-10 20:09:54','2020-02-10 20:09:54'),(5,'neda','$2a$08$k1nFnmeK9Kf1ah17W56kYOTFZeXF26PHd3kWjeSM76odLLLzFzM/u','nasrinn','kh','2020-02-10 21:08:09','2020-02-10 21:08:09');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-10  1:23:06
+-- Dump completed on 2020-02-11  1:00:49

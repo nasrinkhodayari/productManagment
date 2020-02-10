@@ -14,7 +14,7 @@ module.exports = function (api) {
         if (!passwordIsValid) return res.status(401).send({ auth: false, token: null, message: "username or password is invalid" });
 
         let token = api.jwt.sign({ id: user.id }, api.tokenConfig.secret, {
-          expiresIn: 3600 // expires in 1 hours
+          expiresIn: 3600 // expires in 1 hour
         });
 
         res.status(200).send({
@@ -46,7 +46,7 @@ module.exports = function (api) {
     }).then(user => {
       // create a token
       let token = api.jwt.sign({ id: user.id }, api.tokenConfig.secret, {
-        expiresIn: 3600 // expires in 1 hours
+        expiresIn: 3600 // expires in 1 hour
       });
       res.status(200).send({ auth: true, token: token });
     }).catch(err => {
