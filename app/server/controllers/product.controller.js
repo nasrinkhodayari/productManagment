@@ -1,34 +1,51 @@
 module.exports = function (api) {
 
     const addProduct = (req, res) => {
-        //ADD VALIDATION
-
-        // Create a Product
-        const product = {
-            title: req.body.title,
-            url: req.body.url,
-            price: req.body.price,
-            msrp: req.body.msrp,
-            available: req.body.available,
-            description: req.body.description,
-            merchant_id: req.body.merchant_id,
-            category_id: req.body.category_id
-        };
-        api.models.product.create(product).then(data => {
-            if (data.product_id) {
-                addImagesToProduct(data.product_id, req.body.images, res);
-            } else {
-                res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while creating the Product."
+        // Validator posted data
+        var validator = new api.validator();
+        validator
+            .add({
+                type: 'require',
+                value: firstName,
+                msg: 'First name is not valid'
+            })
+            .add({
+                type: 'length',
+                value: interests,
+                max: 255,
+                msg: 'Interest length is more than 255 character'
+            })
+            .validate()
+            .error(function (msgs) {
+                cb(api.resultAPI.error(msgs));
+            }).success(function () {
+                // Create a Product
+                const product = {
+                    title: req.body.title,
+                    url: req.body.url,
+                    price: req.body.price,
+                    msrp: req.body.msrp,
+                    available: req.body.available,
+                    description: req.body.description,
+                    merchant_id: req.body.merchant_id,
+                    category_id: req.body.category_id
+                };
+                api.models.product.create(product).then(data => {
+                    if (data.product_id) {
+                        addImagesToProduct(data.product_id, req.body.images, res);
+                    } else {
+                        res.status(500).send({
+                            message:
+                                err.message || "Some error occurred while creating the Product."
+                        });
+                    }
+                }).catch(err => {
+                    res.status(500).send({
+                        message:
+                            err.message || "Some error occurred while creating the Product."
+                    });
                 });
-            }
-        }).catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while creating the Product."
             });
-        });
     };
     const addImagesToProduct = (productId, images, res) => {
 
