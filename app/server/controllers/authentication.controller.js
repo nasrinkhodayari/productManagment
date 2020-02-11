@@ -3,7 +3,7 @@ module.exports = function (api) {
   const login = (req, res) => {
 
     // Validator posted data
-    var validator = new api.validator();
+    let validator = new api.validator();
     validator
       .add({
         type: 'require',
@@ -56,7 +56,7 @@ module.exports = function (api) {
   const register = (req, res) => {
 
     // Validator posted data
-    var validator = new api.validator();
+    let validator = new api.validator();
     validator
       .add({
         type: 'require',
