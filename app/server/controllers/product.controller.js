@@ -120,24 +120,39 @@ module.exports = function (api) {
             });
     };
     const searchProduct = (req, res) => {
-        let condition = req.params.title ? { title: { [api.models.Sequelize.Op.like]: `%${req.params.title}%` } } : null;
-        api.models.product.findAll({ where: condition }).
-            then(productList => {
-                res.send(productList);
-            }).catch(err => {
-                res.status(500).send({
-                    message: "Error retrieving the products"
-                });
-            })
+
+        let sql_query = "SELECT products.*,categories.title as categoryName FROM products LEFT JOIN categories on products.category_id=";
+        sql_query += "categories.category_id where products.title like :search_name";
+
+        api.models.sequelize
+            .query(sql_query, {
+                raw: true,
+                replacements: { search_name: `%${req.params.title}%` }
+            }).spread(results => {
+                if (results.length === 0) {
+                    res.status(404).send({
+                        message: "Product(s) not found"
+                    });
+                } else {
+                    res.send({ body: results });
+                }
+            });
     };
     const getAllProduct = (req, res) => {
-        api.models.product.findAll().
-            then(productList => {
-                res.send(productList);
-            }).catch(err => {
-                res.status(500).send({
-                    message: "Error retrieving the products"
-                });
+
+        let sql_query = "SELECT products.*,categories.title as categoryName FROM products LEFT JOIN categories on products.category_id=categories.category_id";
+
+        api.models.sequelize
+            .query(sql_query, {
+                raw: true,
+            }).spread(results => {
+                if (results.length === 0) {
+                    res.status(404).send({
+                        message: "Product(s) not found"
+                    });
+                } else {
+                    res.send({ body: results });
+                }
             });
     };
     return {
