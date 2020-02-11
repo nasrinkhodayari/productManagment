@@ -16,11 +16,11 @@ module.exports = function (api) {
         msg: 'password is not valid'
       })
       .validate()
-      .error(function (msgs) {
+      .error(msgs => {
         res.status(500).send({
           message: msgs
         });
-      }).success(function () {
+      }).success(() => {
         api.models.users.findOne({ username: req.body.username }
         ).then(user => {
           if (user) {
@@ -79,11 +79,11 @@ module.exports = function (api) {
         msg: 'password is not valid'
       })
       .validate()
-      .error(function (msgs) {
+      .error(msgs => {
         res.status(500).send({
           message: msgs
         });
-      }).success(function () {
+      }).success(() => {
         api.models.users.create({
           username: req.body.username,
           firstname: req.body.firstname,
