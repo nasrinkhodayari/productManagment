@@ -2,26 +2,26 @@ module.exports = function () {
     let items = [];
     let invalidResults = [];
 
-    let add = (item) => {
+    let add = function (item) {
         items.push(item);
         return this;
     };
 
-    let success = (cb) => {
+    let success = function (cb) {
         if (invalidResults.length === 0) {
             cb();
         }
         return this;
     };
 
-    let error = (cb) => {
+    let error = function (cb) {
         if (invalidResults.length > 0) {
             cb(invalidResults);
         }
         return this;
     };
 
-    let validate = () => {
+    let validate = function () {
         invalidResults = [];
         items.forEach(element => {
             let type = element.type;
