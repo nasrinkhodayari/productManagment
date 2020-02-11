@@ -2,23 +2,40 @@ module.exports = function (api) {
 
     const addProduct = (req, res) => {
         // Validator posted data
-        var validator = new api.validator();
+        let validator = new api.validator();
         validator
             .add({
                 type: 'require',
-                value: firstName,
-                msg: 'First name is not valid'
+                value: req.body.title,
+                msg: 'Product title is not valid'
             })
             .add({
-                type: 'length',
-                value: interests,
-                max: 255,
-                msg: 'Interest length is more than 255 character'
+                type: 'require',
+                value: req.body.url,
+                msg: 'Product url is not valid'
+            }).add({
+                type: 'require',
+                value: req.body.price,
+                msg: 'Product price is not valid'
+            }).add({
+                type: 'require',
+                value: req.body.merchant_id,
+                msg: 'Product merchant is not valid'
+            }).add({
+                type: 'require',
+                value: req.body.category_id,
+                msg: 'Product category is not valid'
+            }).add({
+                type: 'array',
+                value: req.body.images,
+                msg: 'Please insert images(s) url for your product'
             })
             .validate()
-            .error(function (msgs) {
-                cb(api.resultAPI.error(msgs));
-            }).success(function () {
+            .error(msgs => {
+                res.status(500).send({
+                    message: msgs
+                });
+            }).success(() => {
                 // Create a Product
                 const product = {
                     title: req.body.title,
@@ -65,41 +82,77 @@ module.exports = function (api) {
     };
     const editProduct = (req, res) => {
         let id = req.params.id;
-
-        // Edit a Product
-        const product = {
-            title: req.body.title,
-            url: req.body.url,
-            price: req.body.price,
-            msrp: req.body.msrp,
-            available: req.body.available,
-            description: req.body.description,
-            merchant_id: req.body.merchant_id,
-            category_id: req.body.category_id
-        };
-
-        api.models.product.update(product, {
-            where: { product_id: id }
-        })
-            .then(put => {
-                if (put[0] === 1) {
-                    if (req.body.images) {
-                        editProductImages(req.body.images, res);
-                    } else {
-                        res.send({
-                            message: "Product was updated successfully."
-                        });
-                    }
-                } else {
-                    res.send({
-                        message: "Cannot update Product. Maybe Product was not found!"
-                    });
-                }
+        // Validator posted data
+        let validator = new api.validator();
+        validator
+            .add({
+                type: 'require',
+                value: req.body.title,
+                msg: 'Product title is not valid'
             })
-            .catch(err => {
+            .add({
+                type: 'require',
+                value: req.body.url,
+                msg: 'Product url is not valid'
+            }).add({
+                type: 'require',
+                value: req.body.price,
+                msg: 'Product price is not valid'
+            }).add({
+                type: 'require',
+                value: req.body.merchant_id,
+                msg: 'Product merchant is not valid'
+            }).add({
+                type: 'require',
+                value: req.body.category_id,
+                msg: 'Product category is not valid'
+            }).add({
+                type: 'array',
+                value: req.body.images,
+                msg: 'Please insert images(s) url for your product'
+            })
+            .validate()
+            .error(msgs => {
                 res.status(500).send({
-                    message: "Error updating Produc"
+                    message: msgs
                 });
+            }).success(() => {
+                // Edit a Product
+                const product = {
+                    title: req.body.title,
+                    url: req.body.url,
+                    price: req.body.price,
+                    msrp: req.body.msrp,
+                    available: req.body.available,
+                    description: req.body.description,
+                    merchant_id: req.body.merchant_id,
+                    category_id: req.body.category_id
+                };
+
+                api.models.product.update(product, {
+                    where: { product_id: id }
+                })
+                    .then(put => {
+                        if (put[0] === 1) {
+                            if (req.body.images) {
+                                editProductImages(req.body.images, res);
+                            } else {
+                                res.send({
+                                    message: "Product was updated successfully."
+                                });
+                            }
+                        } else {
+                            res.send({
+                                message: "Cannot update Product. Maybe Product was not found!"
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        res.status(500).send({
+                            message: "Error updating Product!",
+                            detail: err.table
+                        });
+                    });
             });
     };
     const editProductImages = (images, res) => {
@@ -108,7 +161,7 @@ module.exports = function (api) {
                 updateOnDuplicate: ['image', 'updatedAt']
             }).then(put => {
                 res.send({
-                    message: "Product Image was updated successfully."
+                    message: "Product was updated successfully."
                 });
             }).catch(err => {
                 res.send({
