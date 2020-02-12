@@ -39,7 +39,6 @@ module.exports = function (api) {
               },
               message: "welcome to your Product Managment profile"
             });
-            res.send(responseObj);
           } else {
             res.status(404).send({
               message: "username or password is invalid"

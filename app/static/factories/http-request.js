@@ -4,7 +4,6 @@ angular.module('httpRequestModule', []).
         const httpGet = (url) => {
             $http.get(url)
                 .then(data => {
-                    debugger
                 }).catch(err => {
                     //Implement error
                     console.log(err);

@@ -1,29 +1,34 @@
-var app = angular.module('productManagment', [
-    "ngRoute",
-    "AuthModule",
-    "ProductModule",
-    "httpRequestModule"]);
+var productManagment = angular.module('productManagment', [
+    'ngMaterial', 'ngAnimate', 'ngMessages', 'ngAria', 'ui.router',
+    "AuthModule", "ProductModule", "httpRequestModule","toastModule"]);
 
-app.config(function ($routeProvider) {
-    $routeProvider
-        .when("/login", {
+(function (app) {
+    app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+
+        $urlRouterProvider.otherwise('/');
+
+        $stateProvider.state('login', {
+            url: '/',
             templateUrl: "./modules/authentication/templates/login.html",
             controller: "AuthController"
-        })
-        .when("/register", {
+        }).state('register', {
+            url: '/register',
             templateUrl: "./modules/authentication/templates/register.html",
             controller: "AuthController"
-        })
-        .when("/list", {
+        }).state("/list", {
+            url: '/list',
             templateUrl: "./modules/products/templates/list.html",
             controller: "ProductController"
         })
-        .when("/creat", {
-            templateUrl: "./modules/products/templates/creat.html",
-            controller: "ProductController"
-        })
-        .when("/edit", {
-            templateUrl: "./modules/products/templates/edit.html",
-            controller: "ProductController"
-        });
-});
+            .state("/creat", {
+                url: 'creat',
+                templateUrl: "./modules/products/templates/creat.html",
+                controller: "ProductController"
+            })
+            .state("/edit", {
+                url: 'edit',
+                templateUrl: "./modules/products/templates/edit.html",
+                controller: "ProductController"
+            });
+    }]);
+})(productManagment);

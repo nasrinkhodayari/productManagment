@@ -2,22 +2,33 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="./styles/base.css">
+    <title>productManagment</title>
+    <!-- inject:css -->
+    <link rel="stylesheet" href="./libs/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="./styles/base.css">
+    <!-- endinject -->
+</head>
+
+<body ng-app="productManagment" ng-cloak>
+    <md-divider></md-divider>
+    <h1 class="md-display-1 text-center">Product Managment</h1>
+    <md-divider></md-divider>
+    
+    <div ui-view></div>
+    <!-- <ng-view></ng-view> -->
+    <!-- inject:js -->
     <script src="./libs/angular.min.js"></script>
-    <script src="./libs/angular-route.min.js"></script>
+    <script src="./libs/angular-animate.min.js"></script>
+    <script src="./libs/angular-aria.min.js"></script>
+    <script src="./libs/angular-material/angular-material.min.js"></script>
+    <script src="./libs/angular-ui-router.min.js"></script>
+    <script src="./libs/angular-messages.min.js"></script>
     <script src="./app.js"></script>
     <script src="./modules/products/scripts/controller.js"></script>
     <script src="./modules/authentication/scripts/controller.js"></script>
-    <script src="./util/http-request.js"></script>
-</head>
-
-<body ng-app="productManagment">
-    <div class="container">
-        <ng-view></ng-view>
-    </div>
+    <script src="./factories/http-request.js"></script>
+    <script src="./factories/toast.js"></script>
+    <!-- endinject -->
 </body>
 
 </html>

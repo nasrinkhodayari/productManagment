@@ -1,7 +1,30 @@
-<div>
-    <form ng-submit="login()">
-        <input placeholder="username" ng-model="userInfo.username"></input>
-        <input placeholder="password" ng-model="userInfo.password"></input>
-        <button type="submit">login</button>
-    </form>
+<div layout="column" layout-align="center center" layout-fill="layout-fill">
+    <div layout="column" class="mt-4 md-whiteframe-z1">
+        <md-toolbar>
+            <h2 class="md-toolbar-tools"><span>Login</span></h2>
+        </md-toolbar>
+        <form name="loginForm" ng-submit="login()">
+            <md-content layout="column" class="md-padding">
+                <md-input-container>
+                    <label>Username</label>
+                    <input required type="text" ng-model="userInfo.username" />
+                    <div ng-messages="loginForm.username.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container>
+                    <label>Password</label>
+                    <input required type="password" ng-model="userInfo.password" />
+                    <div ng-messages="loginForm.password.$error" role="alert">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+                <div layout="row" layout-align="center center">
+                    <md-button type="submit" class="md-raised md-primary">Login</md-button>
+                    <div flex="flex"></div>
+                    <md-button href="#/register" md-no-ink>Click me for regigster</md-button>
+                </div>
+            </md-content>
+        </form>
+    </div>
 </div>

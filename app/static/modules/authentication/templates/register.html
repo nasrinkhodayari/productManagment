@@ -1,9 +1,45 @@
-<div>
-    <form ng-submit="register()">
-        <input placeholder="First Name" ng-model="userInfo.firstname"></input>
-        <input placeholder="Last Name" ng-model="userInfo.lastname"></input>
-        <input placeholder="UserName" ng-model="userInfo.username"></input>
-        <input placeholder="Password" ng-model="userInfo.password"></input>
-        <button type="submit">Register</button>
-    </form>
+
+<div layout="column" layout-align="center center" layout-fill="layout-fill">
+    <div layout="column" class="mt-4 md-whiteframe-z1">
+        <md-toolbar>
+            <h2 class="md-toolbar-tools"><span>register</span></h2>
+        </md-toolbar>
+        <form name="registerForm" ng-submit="register()">
+            <md-content layout="column" class="md-padding">
+                <md-input-container>
+                    <label>Username</label>
+                    <input required type="text" ng-model="userInfo.firstname" />
+                    <div ng-messages="registerForm.firstname.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container>
+                    <label>Username</label>
+                    <input required type="text" ng-model="userInfo.lastname" />
+                    <div ng-messages="registerForm.lastname.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container>
+                    <label>Username</label>
+                    <input required type="text" ng-model="userInfo.username" />
+                    <div ng-messages="registerForm.username.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container>
+                    <label>Password</label>
+                    <input required type="password" ng-model="userInfo.password" />
+                    <div ng-messages="registerForm.password.$error" role="alert">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+                <div layout="row" layout-align="center center">
+                    <md-button type="submit" class="md-raised md-primary">Register</md-button>
+                    <div flex="flex"></div>
+                    <md-button href="#/login" md-no-ink>Click me for Login</md-button>
+                </div>
+            </md-content>
+        </form>
+    </div>
 </div>
