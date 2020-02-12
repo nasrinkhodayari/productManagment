@@ -21,4 +21,8 @@ module.exports = function (api) {
     api.app.get(productSrvRout, api.verifyTokenMiddleware, function (req, res) {
         productController.getAllProduct(req, res);
     });
+    //Get Product by id
+    api.app.get(productSrvRout+"/getById/:id", api.verifyTokenMiddleware, function (req, res) {
+        productController.getProductById(req, res);
+    });
 }

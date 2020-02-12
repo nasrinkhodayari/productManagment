@@ -197,7 +197,7 @@ module.exports = function (api) {
         api.models.sequelize
             .query(sql_query, {
                 raw: true,
-                replacements: { search_name: `%${req.params.title}%` }
+                replacements: { search_name: `%${req.body.title}%` }
             }).spread(results => {
                 if (results.length === 0) {
                     res.status(404).send({
@@ -225,11 +225,46 @@ module.exports = function (api) {
                 }
             });
     };
+    //get product with image(s),merchantName,categorName
+    const getProductById = (req, res) => {
+        let sql_query = 'select products.title as productName,';
+        sql_query += 'products.url as productUrl, products.price,';
+        sql_query += 'products.msrp, products.available, products.description,';
+        sql_query += 'merchants.name as merchantName,';
+        sql_query += 'categories.title as categoryName from products Left join merchants on merchants.merchant_id=';
+        sql_query += 'products.merchant_id left join categories on categories.category_id = products.category_id where products.product_id=' + req.params.id;
+
+        api.models.sequelize
+            .query(sql_query, {
+                raw: true
+            }).spread(results => {
+                if (results.length === 0) {
+                    res.status(404).send({
+                        message: "Product not found"
+                    });
+                } else {
+                    api.models.product_images
+                        .findAll({ where: { product_id: req.params.id } })
+                        .then(data => {
+                            let productImgs = [];
+                            data.forEach(img => {
+                                productImgs.push({ image: img.image, product_id: img.product_id });
+                            });
+                            res.send({ body: results, images: productImgs });
+                        }).catch(err => {
+                            res.status(404).send({
+                                message: "Product Image(s) not found"
+                            });
+                        });
+                }
+            });
+    };
     return {
         addProduct: addProduct,
         editProduct: editProduct,
         deleteProduct: deleteProduct,
         searchProduct: searchProduct,
-        getAllProduct: getAllProduct
+        getAllProduct: getAllProduct,
+        getProductById: getProductById
     };
 }
