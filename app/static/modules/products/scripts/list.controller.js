@@ -10,6 +10,7 @@ angular.module('ProductModule', ["CreateProductModule"]).
         const deleteOperation = function (records) {
           $http.delete('/services/product/' + JSON.stringify(records))
             .then(result => {
+              selectedContentForDelete = [];
               $scope.loadDatas();
             }).catch(err => {
               toastFactory.showSimpleToast(err.data.message);
@@ -67,7 +68,8 @@ angular.module('ProductModule', ["CreateProductModule"]).
             toastFactory.showSimpleToast('Please select some item for delete.');
             return;
           }
-          deleteOperation(selectedContentForDelete);
+          if (confirm("Are you sure to delete this items?"))
+            deleteOperation(selectedContentForDelete);
         };
         $scope.doSearch = function (productName) {
           $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
@@ -93,8 +95,8 @@ angular.module('ProductModule', ["CreateProductModule"]).
               };
               $scope.editItem = function () {
                 $mdBottomSheet.hide();
-                sessionStorage.setItem('selectedItem',JSON.stringify(selectedContent));
-                window.location.href = "#/create?"+selectedContent.product_id;
+                sessionStorage.setItem('selectedItem', JSON.stringify(selectedContent));
+                window.location.href = "#/create?" + selectedContent.product_id;
               };
             },
             targetEvent: $event,

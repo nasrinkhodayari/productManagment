@@ -228,6 +228,7 @@ module.exports = function (api) {
             });
     };
     //get product with image(s),merchantName,categorName
+    //I don`t use this method in my project
     const getProductById = (req, res) => {
         let sql_query = 'select products.title as productName,';
         sql_query += 'products.url as productUrl, products.price,';
@@ -261,12 +262,28 @@ module.exports = function (api) {
                 }
             });
     };
+    const getProductImagesByProductId = (req, res) => {
+        api.models.product_images.findAll({
+            where: { product_id: req.params.product_id },
+            attributes: ['image']
+        }
+        ).then(images => {
+            res.status(200).send({
+                body: images
+            });
+        }).catch(err => {
+            res.status(500).send({
+                message: "Error retrieving the Images"
+            });
+        });
+    };
     return {
         addProduct: addProduct,
         editProduct: editProduct,
         deleteProduct: deleteProduct,
         searchProduct: searchProduct,
         getAllProduct: getAllProduct,
-        getProductById: getProductById
+        getProductById: getProductById,
+        getProductImagesByProductId: getProductImagesByProductId
     };
 }

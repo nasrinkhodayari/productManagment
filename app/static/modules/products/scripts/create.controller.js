@@ -16,6 +16,7 @@ angular.module('CreateProductModule', []).
                         if (selectedItem.product_id == window.location.href.split('?', 2)[1]) {
                             $scope.editMode = true;
                             $scope.productInfo = selectedItem;
+                            getProductImages(selectedItem.product_id);
                         } else {
                             toastFactory.showSimpleToast('Something went wrong!');
                             window.location.href = "#/list";
@@ -24,14 +25,26 @@ angular.module('CreateProductModule', []).
                     }
                     $scope.editMode
                 }
-
-                const getProductImages = function () {
-
+                function getProductImages(product_id) {
+                    $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
+                    $http.get('/services/product/getProductImages/' + product_id)
+                        .then(result => {
+                            $scope.productInfo.images = [];
+                            result.data.body.forEach(img => {
+                                $scope.productInfo.images.push(img.image);
+                            });
+                        }).catch(err => {
+                            checkAuthentication(err);
+                            toastFactory.showSimpleToast(err.data.message);
+                            if (err.data.auth === false) {
+                                window.location.href = "#/login";
+                            }
+                        });
                 };
-                const checkAuthentication = function(err){
+                const checkAuthentication = function (err) {
                     if (err.data.auth === false) {
                         window.location.href = "#/login";
-                      }
+                    }
                 };
                 $scope.getMerchantsList = function () {
                     $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
