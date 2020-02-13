@@ -1,11 +1,11 @@
 angular.module('AuthModule', []).controller('AuthController',
-    ['$scope', '$http', '$window', 'toastFactory',
-        function ($scope, $http, $window, toastFactory) {
+    ['$scope', '$http', 'toastFactory',
+        function ($scope, $http, toastFactory) {
             $scope.login = function () {
-                $http.post('/services/auth/login', $scope.userInfo)
+                $http.post(apiBaseUrl+authUrls.login, $scope.userInfo)
                     .then(result => {
                         toastFactory.showSimpleToast(result.data.message);
-                        $window.location.href='#/list';
+                        window.location.href='#/list';
                         sessionStorage.setItem('token', result.data.token);
                     }).catch(err => {
                         //Implement error
@@ -14,16 +14,16 @@ angular.module('AuthModule', []).controller('AuthController',
                     });
             }
             $scope.register = function () {
-                $http.post('/services/auth/register', $scope.userInfo)
+                $http.post(apiBaseUrl+authUrls.register, $scope.userInfo)
                     .then(data => {
                         sessionStorage.setItem('token', data.token);
+                        toastFactory.showSimpleToast(result.data.message);
                     }).catch(err => {
-                        //Implement error
-                        console.log(err);
+                        toastFactory.showSimpleToast(err.data.message);
                     });
             }
             $scope.logout = function () {
-                $http.get('/services/auth/logout')
+                $http.get(apiBaseUrl+authUrls.logout)
                     .then(data => {
                         //Implement logout
                     }).catch(err => {

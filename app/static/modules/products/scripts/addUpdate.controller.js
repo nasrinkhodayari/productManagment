@@ -14,7 +14,7 @@ angular.module('CreateProductModule', []).
 
                 const getProductImages = function (product_id) {
                     $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
-                    $http.get('/services/product/getProductImages/' + product_id)
+                    $http.get(productUrls.baseproductUrl+productUrls.getProductImages + product_id)
                         .then(result => {
                             $scope.productInfo.images = [];
                             result.data.body.forEach(img => {
@@ -103,7 +103,7 @@ angular.module('CreateProductModule', []).
                 $scope.submitProduct = function () {
                     $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
                     if (!$scope.editMode) {
-                        $http.post('/services/product', $scope.productInfo)
+                        $http.post(productUrls.baseproductUrl, $scope.productInfo)
                             .then(result => {
                                 toastFactory.showSimpleToast('Product added succesfully');
                                 window.location.href = '#/list';
@@ -114,7 +114,7 @@ angular.module('CreateProductModule', []).
                             });
                     } else {
                         if (selectedItem) {
-                            $http.put('/services/product/' + selectedItem.product_id, $scope.productInfo)
+                            $http.put(productUrls.baseproductUrl + selectedItem.product_id, $scope.productInfo)
                                 .then(result => {
                                     toastFactory.showSimpleToast('Product update succesfully');
                                     window.location.href = '#/list';

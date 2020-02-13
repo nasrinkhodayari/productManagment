@@ -8,7 +8,7 @@ angular.module('ProductModule', ["CreateProductModule"]).
         let selectedContentForDelete = [];
 
         const deleteOperation = function (records) {
-          $http.delete('/services/product/' + JSON.stringify(records))
+          $http.delete(productUrls.baseproductUrl + JSON.stringify(records))
             .then(result => {
               selectedContentForDelete = [];
               $scope.loadDatas();
@@ -45,7 +45,7 @@ angular.module('ProductModule', ["CreateProductModule"]).
         ];
         $scope.loadDatas = function () {
           $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
-          $http.get('/services/product')
+          $http.get(productUrls.baseproductUrl)
             .then(result => {
               $scope.contents = result.data.body;
             }).catch(err => {
