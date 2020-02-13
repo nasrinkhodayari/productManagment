@@ -3,29 +3,17 @@ angular.module('CreateProductModule', []).
         ['$scope', '$http', 'httpRequestFactory', 'toastFactory', '$filter', '$mdBottomSheet',
             function ($scope, $http, httpRequestFactory, toastFactory, $filter, $mdBottomSheet) {
                 let categoriesList = [];
+                let selectedItem = JSON.parse(sessionStorage.getItem("selectedItem"));
+                let selectedProductCategoryChain = '';
+                let categoryTmp = [];
                 $scope.firstCatChildes = [];
                 $scope.secondCatChildes = [];
                 $scope.lastCatChildes = [];
                 $scope.productInfo = {};
                 $scope.productInfo.images = [];
                 $scope.editMode = false;
-                let selectedItem = JSON.parse(sessionStorage.getItem("selectedItem"));
 
-                if (window.location.href.split('?', 2)[1]) {
-                    if (selectedItem) {
-                        if (selectedItem.product_id == window.location.href.split('?', 2)[1]) {
-                            $scope.editMode = true;
-                            $scope.productInfo = selectedItem;
-                            getProductImages(selectedItem.product_id);
-                        } else {
-                            toastFactory.showSimpleToast('Something went wrong!');
-                            window.location.href = "#/list";
-                            $scope.editMode = true;
-                        }
-                    }
-                    $scope.editMode
-                }
-                function getProductImages(product_id) {
+                const getProductImages = function (product_id) {
                     $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
                     $http.get('/services/product/getProductImages/' + product_id)
                         .then(result => {
@@ -66,6 +54,11 @@ angular.module('CreateProductModule', []).
                         .then(result => {
                             categoriesList = result.data.body;
                             $scope.parentCategories = [];
+                            if ($scope.editMode) {
+                                categoryTmp.push(selectedItem.categoryName);
+                                $scope.productInfo.categoryName = getSelectedProductCategoryChain(selectedItem);
+                                debugger
+                            }
                             categoriesList.forEach(item => {
                                 if (item.parent_id === 0)
                                     $scope.parentCategories.push(item);
@@ -135,4 +128,33 @@ angular.module('CreateProductModule', []).
                         }
                     }
                 };
+                const getSelectedProductCategoryChain = function (currentCat) {
+                    let currentCatObj = categoriesList.filter(item => { return item.category_id === currentCat.category_id });
+                    categoriesList.forEach(catItem => {
+                        if (catItem.category_id === currentCatObj[0].parent_id) {
+                            categoryTmp.push(catItem.title);
+                            getSelectedProductCategoryChain(catItem);
+                        }
+                    });
+
+                    let finalResult = '';
+                    for (var iCat = categoryTmp.length - 1; iCat >= 0; iCat--) {
+                        finalResult += categoryTmp[iCat] + '>';
+                    }
+                    return finalResult;
+                };
+                if (window.location.href.split('?', 2)[1]) {
+                    if (selectedItem) {
+                        if (selectedItem.product_id == window.location.href.split('?', 2)[1]) {
+                            $scope.editMode = true;
+                            $scope.productInfo = selectedItem;
+                            getProductImages(selectedItem.product_id);
+                        } else {
+                            toastFactory.showSimpleToast('Something went wrong!');
+                            window.location.href = "#/list";
+                            $scope.editMode = true;
+                        }
+                    }
+                    $scope.editMode
+                }
             }]);
