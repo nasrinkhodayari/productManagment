@@ -1,16 +1,15 @@
 angular.module('CreateProductModule', []).
-    controller('ProductCreateController',
-        ['$scope', '$http', 'httpRequestFactory', 'toastFactory', '$filter', '$mdBottomSheet',
-            function ($scope, $http, httpRequestFactory, toastFactory, $filter, $mdBottomSheet) {
+    controller('AddUpdateController',
+        ['$scope', '$http','toastFactory', '$filter', '$mdBottomSheet',
+            function ($scope, $http, toastFactory) {
                 let categoriesList = [];
                 let selectedItem = JSON.parse(sessionStorage.getItem("selectedItem"));
-                let selectedProductCategoryChain = '';
                 let categoryTmp = [];
                 $scope.firstCatChildes = [];
                 $scope.secondCatChildes = [];
                 $scope.lastCatChildes = [];
-                $scope.productInfo = {};
-                $scope.productInfo.images = [];
+                // $scope.productInfo = {};
+                // $scope.productInfo.images = [];
                 $scope.editMode = false;
 
                 const getProductImages = function (product_id) {
@@ -57,7 +56,6 @@ angular.module('CreateProductModule', []).
                             if ($scope.editMode) {
                                 categoryTmp.push(selectedItem.categoryName);
                                 $scope.productInfo.categoryName = getSelectedProductCategoryChain(selectedItem);
-                                debugger
                             }
                             categoriesList.forEach(item => {
                                 if (item.parent_id === 0)
@@ -119,7 +117,7 @@ angular.module('CreateProductModule', []).
                             $http.put('/services/product/' + selectedItem.product_id, $scope.productInfo)
                                 .then(result => {
                                     toastFactory.showSimpleToast('Product update succesfully');
-                                    // window.location.href = '#/list';
+                                    window.location.href = '#/list';
                                 }).catch(err => {
                                     checkAuthentication(err);
                                     toastFactory.showSimpleToast(err.data.message);
@@ -139,7 +137,9 @@ angular.module('CreateProductModule', []).
 
                     let finalResult = '';
                     for (var iCat = categoryTmp.length - 1; iCat >= 0; iCat--) {
-                        finalResult += categoryTmp[iCat] + '>';
+                        finalResult += categoryTmp[iCat];
+                        if (iCat != 0)
+                            finalResult += '>';
                     }
                     return finalResult;
                 };

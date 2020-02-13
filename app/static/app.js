@@ -1,6 +1,6 @@
 var productManagment = angular.module('productManagment', [
     'ngMaterial', 'ngAnimate', 'ngMessages', 'ngAria', 'ui.router',
-    "AuthModule", "ProductModule", "httpRequestModule", "toastModule", "material.components.table"]);
+    "AuthModule", "ProductModule", "toastModule", "material.components.table"]);
 
 (function (app) {
     app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -19,14 +19,10 @@ var productManagment = angular.module('productManagment', [
             url: '/list',
             templateUrl: "./modules/products/templates/list.html",
             controller: "ProductListController"
-        }).state("/create", {
-            url: '/create',
-            templateUrl: "./modules/products/templates/create.html",
-            controller: "ProductCreateController"
-        }).state("/edit", {
-            url: '/edit',
-            templateUrl: "./modules/products/templates/edit.html",
-            controller: "ProductController"
+        }).state("/addUpdate", {
+            url: '/addUpdate',
+            templateUrl: "./modules/products/templates/addUpdate.html",
+            controller: "AddUpdateController"
         });
     }]);
     app.directive('ngEnter', function () {

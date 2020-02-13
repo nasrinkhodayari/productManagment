@@ -1,13 +1,14 @@
 <div class="layout-fill layout-align-center-center layout-column">
-  <md-toolbar layout="column" class="md-small md-hue-2">
-    <section class="no-print" layout-align="end center" layout-padding flex style="padding-left: 70%;">
-      <div layout="row" layout-align="start center" flex>
-        <a class="add-button md-button md-ink-ripple" href="#/create"> + Add New Product </a>
-        <md-button class="delete-button" ng-click="doBulkDelete()"> - Bulk Delete</md-button>
-      </div>
-    </section>
+  <md-toolbar layout="column">
+    <h1 class="md-toolbar-tools" style="padding-left: 31%;border-bottom: 1px solid gray;">Product List</h1>
   </md-toolbar>
-  <h1 class="md-toolbar-tools" style="padding-left: 31%;border-bottom: 1px solid gray;">Product List</h1>
+  
+  <section class="no-print" layout-align="end center" layout-padding flex style="padding-left: 15%;">
+    <div layout="row" layout-align="start center" flex>
+      <a class="add-button md-button md-ink-ripple" href="#/addUpdate"> + Add New Product </a>
+      <md-button class="delete-button" ng-click="doBulkDelete()"> - Bulk Delete</md-button>
+    </div>
+  </section>
   <md-table headers="headers" contents="contents" pagination="true" page-count="pageItems" action="true"
     on-action="doAction(selectedContent, $event)" selection="true" on-search="doSearch(productName)"
     on-select="selectOperation(checked, selectedContent)" filter="filterValue">

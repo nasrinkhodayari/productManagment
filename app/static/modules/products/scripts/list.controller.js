@@ -1,7 +1,7 @@
 angular.module('ProductModule', ["CreateProductModule"]).
   controller('ProductListController',
-    ['$scope', '$http', 'httpRequestFactory', 'toastFactory', '$filter', '$mdBottomSheet',
-      function ($scope, $http, httpRequestFactory, toastFactory, $filter, $mdBottomSheet) {
+    ['$scope', '$http', 'toastFactory', '$mdBottomSheet',
+      function ($scope, $http, toastFactory, $mdBottomSheet) {
 
         $scope.pageItems = 5;
         $scope.selectedContent = '';
@@ -96,11 +96,11 @@ angular.module('ProductModule', ["CreateProductModule"]).
               $scope.editItem = function () {
                 $mdBottomSheet.hide();
                 sessionStorage.setItem('selectedItem', JSON.stringify(selectedContent));
-                window.location.href = "#/create?" + selectedContent.product_id;
+                window.location.href = "#/addUpdate?" + selectedContent.product_id;
               };
             },
             targetEvent: $event,
-            template: '<md-bottom-sheet class="md-grid"><span flex></span><md-button aria-label="Delete" ng-click="deleteItem()"><i class="material-icons md-18">delete</i></md-button><md-button aria-label="Edit" ng-click="editItem()"><i class="material-icons md-18">edit</i></md-button></md-bottom-sheet>'
+            template: '<md-bottom-sheet class="md-grid"><span flex></span><md-button aria-label="Delete" ng-click="deleteItem()"><i class="tiny-delete-button material-icons md-18">delete</i></md-button><md-button aria-label="Edit" ng-click="editItem()"><i class="tiny-edit-button material-icons md-18">edit</i></md-button></md-bottom-sheet>'
           }).then(function () {
 
           });
