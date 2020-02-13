@@ -54,7 +54,7 @@
           <div ng-switch="header.contentType">
             <!-- Thumb -->
             <div class="md-table-thumbs" ng-switch-when="image">
-              <div style="background-image:url({{content[header.contentField]}})"></div>
+              <div style="background-image:url({{content[header.contentField]}});background-repeat: no-repeat;background-size: contain;height: 50px;"></div>
             </div>
             <!-- Input -->
             <div class="md-table-content" ng-switch-when="input">

@@ -1,12 +1,16 @@
-angular.module('ProductModule', []).
-  controller('ProductController',
+angular.module('ProductModule', ["CreateProductModule"]).
+  controller('ProductListController',
     ['$scope', '$http', 'httpRequestFactory', 'toastFactory', '$filter', '$mdBottomSheet',
       function ($scope, $http, httpRequestFactory, toastFactory, $filter, $mdBottomSheet) {
 
         $scope.pageItems = 5;
         $scope.selectedContent = '';
-
         $scope.headers = [
+          {
+            contentField: 'default_image',
+            contentType: 'image',
+            label: 'DefaultImage'
+          },
           {
             contentField: 'title',
             contentType: 'text',
@@ -25,7 +29,6 @@ angular.module('ProductModule', []).
             label: 'Status'
           }
         ];
-
         $scope.loadDatas = function () {
           $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
           $http.get('/services/product')
@@ -39,13 +42,9 @@ angular.module('ProductModule', []).
             });
         };
         $scope.loadDatas();
-
         $scope.selectOperation = function (checked, selectedContent) {
           console.log('Is it checked ? ' + checked);
           console.log(selectedContent);
-        };
-        $scope.openNewProductForm = function () {
-          window.location.href = "#/create";
         };
         $scope.doBulkDelete = function () {
           alert('wait to I come back :) I am implementing add new product');
@@ -87,4 +86,5 @@ angular.module('ProductModule', []).
               });
           });
         };
+       
       }]);

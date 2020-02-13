@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
             allowNull: false
         },
+        default_image: {
+            type: 'TEXT',
+            allowNull: false
+        },
         updatedAt: {
             type: 'TIMESTAMP',
             defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),

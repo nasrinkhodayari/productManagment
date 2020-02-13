@@ -1,1 +1,139 @@
-salam creat :)
+<div class="layout-fill layout-align-center-center layout-column">
+    <md-toolbar layout="column" class="md-small md-hue-2">
+        <section class="no-print" layout-align="end center" layout-padding flex>
+            <div layout="row" layout-align="start center" flex>
+                <a class="back-button md-button md-ink-ripple" href="#/list">
+                    < Back To List </a>
+            </div>
+        </section>
+    </md-toolbar>
+</div>
+<h1 class="md-toolbar-tools" style="padding-left: 10%;">Add New Product</h1>
+<div class="create-form">
+
+    <md-content layout-padding>
+        <form name="productForm" ng-submit="addNewProduct()">
+            <div layout="row">
+                <md-input-container flex="50">
+                    <label>Product Name</label>
+                    <input required name="title" ng-model="productInfo.title">
+                    <div ng-messages="productForm.title.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex="50">
+                    <label>Url</label>
+                    <input required name="title" ng-model="productInfo.url">
+                    <div ng-messages="productForm.url.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container flex="50">
+                    <label>Price</label>
+                    <input required type="number" step="any" name="price" ng-model="productInfo.price" />
+                    <div ng-messages="productForm.price.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex="50">
+                    <label>msrp</label>
+                    <input required type="number" step="any" name="msrp" ng-model="productInfo.msrp" />
+                    <div ng-messages="productForm.msrp.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container flex="50">
+                    <label>Merchant</label>
+                    <md-select name="type" ng-model="productInfo.merchant_id" required>
+                        <md-option value="{{merchant.merchant_id}}" ng-repeat="merchant in merchantsList">
+                            {{merchant.name}}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container flex="25">
+                    <label>Category</label>
+                    <md-select name="type" ng-model="parentCategory.category_id" required
+                        ng-change="loadFirstChildes(parentCategory.category_id)">
+                        <md-option value="{{parentCategory.category_id}}"
+                            ng-repeat="parentCategory in parentCategories">{{parentCategory.title}}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex="25" ng-if="firstCatChildes.length!=0">
+                    <md-select name="type" ng-model="firstCatChild.category_id" required
+                        ng-change="loadSecondChildes(firstCatChild.category_id)">
+                        <md-option value="{{firstCatChild.category_id}}" ng-repeat="firstCatChild in firstCatChildes">
+                            {{firstCatChild.title}}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex="25" ng-if="secondCatChildes.length!=0">
+                    <md-select name="type" ng-model="secondCatChild.category_id" required
+                        ng-change="loadLastChildes(secondCatChild.category_id)">
+                        <md-option value="{{secondCatChild.category_id}}"
+                            ng-repeat="secondCatChild in secondCatChildes">
+                            {{secondCatChild.title}}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex="25" ng-if="lastCatChildes.length!=0">
+                    <md-select name="type" ng-model="productInfo.category_id" required>
+                        <md-option value="{{lastCatChild.category_id}}" ng-repeat="lastCatChild in lastCatChildes">
+                            {{lastCatChild.title}}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container flex="50">
+                    <label>Default Image url</label>
+                    <input required name="default_image" ng-model="productInfo.default_image">
+                    <div ng-messages="productForm.default_image.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex="50">
+                    <label>First image url</label>
+                    <input required name="mage1" ng-model="productInfo.images[0]">
+                    <div ng-messages="productForm.image1.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container flex="50">
+                    <label>Second image url</label>
+                    <input required name="image2" ng-model="productInfo.images[1]">
+                    <div ng-messages="productForm.image1.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex="50">
+                    <label>Third image url</label>
+                    <input required name="image3" ng-model="productInfo.images[2]">
+                    <div ng-messages="productForm.image1.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <md-input-container class="md-block">
+                <label>Description</label>
+                <input md-maxlength="30" required md-no-asterisk name="description" ng-model="productInfo.description">
+                <div ng-messages="productForm.description.$error">
+                    <div ng-message="required">This is required.</div>
+                    <div ng-message="md-maxlength">The description must be less than 30 characters long.</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <md-switch class="md-primary" name="available" ng-model="productInfo.available" required>
+                    Enable availability.
+                </md-switch>
+            </md-input-container>
+            <div>
+                <md-button type="submit">Submit</md-button>
+            </div>
+        </form>
+    </md-content>
+
+</div>

@@ -12,6 +12,7 @@
 }
 .add-button:hover {
   background-color: #4CAF50!important;
+  color: yellow;
 }
 .delete-button{
   background-color: #fe4f57;
@@ -19,7 +20,23 @@
 }
 .delete-button:hover {
   background-color: #f44336!important;
+  color: yellow;
 } 
+.back-button{
+  background-color: #9e9e9e33;
+  color: white;
+}
+.back-button:hover {
+  color: yellow;
+} 
+.create-form{
+    margin: 0;
+    width: 85%;
+    margin-left: 10%;
+    min-height: 100%;
+    height: 100%;
+    margin-right: 10%;
+}
 .mt-4{
       margin-top: 4%;
     }

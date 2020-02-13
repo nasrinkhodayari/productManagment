@@ -18,11 +18,11 @@ var productManagment = angular.module('productManagment', [
         }).state("/list", {
             url: '/list',
             templateUrl: "./modules/products/templates/list.html",
-            controller: "ProductController"
+            controller: "ProductListController"
         }).state("/create", {
             url: '/create',
             templateUrl: "./modules/products/templates/create.html",
-            controller: "ProductController"
+            controller: "ProductCreateController"
         }).state("/edit", {
             url: '/edit',
             templateUrl: "./modules/products/templates/edit.html",
