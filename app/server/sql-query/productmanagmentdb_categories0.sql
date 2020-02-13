@@ -30,7 +30,7 @@ CREATE TABLE `categories` (
   `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`category_id`),
   UNIQUE KEY `category_id_UNIQUE` (`category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (1,0,'For Women Shoes','2020-02-10 00:28:49','2020-02-10 00:28:49'),(2,1,'Pump','2020-02-10 00:57:55','2020-02-10 00:57:55'),(3,1,'Golf','2020-02-10 00:57:55','2020-02-10 00:57:55'),(4,0,'For Men Shoes','2020-02-10 00:59:16','2020-02-10 00:59:16'),(5,4,'Golf','2020-02-10 00:59:16','2020-02-10 00:59:16');
+INSERT INTO `categories` VALUES (1,0,'For Women ','2020-02-10 00:28:49','2020-02-10 00:28:49'),(2,6,'Pump','2020-02-10 00:57:55','2020-02-10 00:57:55'),(3,4,'Golf','2020-02-10 00:57:55','2020-02-10 00:57:55'),(4,0,'For Men ','2020-02-10 00:59:16','2020-02-10 00:59:16'),(5,2,'Golf','2020-02-10 00:59:16','2020-02-10 00:59:16'),(6,1,'Shoes','2020-02-11 13:53:55','2020-02-11 13:53:55'),(7,4,'Shoes','2020-02-11 13:53:55','2020-02-11 13:53:55');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-11  1:00:50
+-- Dump completed on 2020-02-14  1:33:21

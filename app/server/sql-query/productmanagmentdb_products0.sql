@@ -30,16 +30,17 @@ CREATE TABLE `products` (
   `url` text COLLATE utf8_unicode_ci,
   `price` decimal(10,0) NOT NULL,
   `msrp` decimal(10,0) DEFAULT NULL,
-  `available` tinyint NOT NULL,
+  `available` tinyint NOT NULL DEFAULT '0',
   `description` text COLLATE utf8_unicode_ci,
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `default_image` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`product_id`),
   KEY `merchant_id_idx` (`merchant_id`),
   KEY `category_id_idx` (`category_id`,`merchant_id`),
   CONSTRAINT `category_id` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`),
   CONSTRAINT `merchant_id` FOREIGN KEY (`merchant_id`) REFERENCES `merchants` (`merchant_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=174 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +49,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (125,1,1,' golfs','http://www.lifestylelabels.com/womens-golf-shoes.html',159,0,0,'Sporting with style, this is a durable and super-comfortable golf shoe built for performance.','2020-02-10 10:44:03','2020-02-10 12:02:59'),(126,1,1,'womens golf shoes','http://www.lifestylelabels.com/womens-golf-shoes.html',159,0,0,'Sporting with style, this is a durable and super-comfortable golf shoe built for performance.','2020-02-10 10:44:45','2020-02-10 10:44:45'),(127,1,1,'womens golf shoes','http://www.lifestylelabels.com/womens-golf-shoes.html',159,0,0,'Sporting with style, this is a durable and super-comfortable golf shoe built for performance.','2020-02-10 10:46:03','2020-02-10 10:46:03'),(138,1,1,'mens golf shoes','http://www.lifestylelabels.com/womens-golf-shoes.html',159,0,0,'Sporting with style, this is a durable and super-comfortable golf shoe built for performance.','2020-02-10 14:29:04','2020-02-10 14:29:04');
+INSERT INTO `products` VALUES (154,2,5,'retert','ouioui',98,8,1,'eqweqwe','2020-02-13 14:26:53','2020-02-13 14:26:53','http://lifestylelabels.com/pub/media/catalog/product/cache/1/small_image/240x300/beff4985b56e3afdbeabfc89641a4582/w/s/wsn001.jpg'),(156,2,5,'good dress','jkh',768,0,1,'22321312rdgfd','2020-02-13 14:28:27','2020-02-13 19:04:57','http://lifestylelabels.com/pub/media/catalog/product/cache/1/small_image/240x300/beff4985b56e3afdbeabfc89641a4582/w/d/wd009.jpeg'),(157,2,3,'nice','jkh',768,0,1,'22321312rdgfd','2020-02-13 14:28:50','2020-02-13 21:41:52','http://lifestylelabels.com/pub/media/catalog/product/cache/1/image/e9c3970ab036de70892d86c6d221abfe/i/s/istock_90539235_large_1.jpg'),(159,2,3,'jacket','jkh',768,0,1,'22321312rdgfd','2020-02-13 14:29:05','2020-02-13 21:10:59','http://lifestylelabels.com/pub/media/catalog/product/cache/1/small_image/240x300/beff4985b56e3afdbeabfc89641a4582/m/v/mv001.jpg'),(160,2,3,'kjkj','jkh',768,0,1,'22321312rdgfd','2020-02-13 14:29:14','2020-02-13 14:29:14','http://lifestylelabels.com/pub/media/catalog/product/cache/1/image/e9c3970ab036de70892d86c6d221abfe/i/s/istock_90539235_large_1.jpg'),(172,2,3,'kjkj','jkh',768,0,1,'22321312rdgfd','2020-02-13 14:35:03','2020-02-13 14:35:03','http://lifestylelabels.com/pub/media/catalog/product/cache/1/small_image/240x300/beff4985b56e3afdbeabfc89641a4582/w/s/wsn001.jpg'),(173,3,7,'test','Bag',768,0,1,'ewew','2020-02-13 19:52:22','2020-02-13 21:52:07','http://lifestylelabels.com/pub/media/catalog/product/cache/1/image/e9c3970ab036de70892d86c6d221abfe/i/s/istock_90539235_large_1.jpg');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -61,4 +62,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-11  1:00:48
+-- Dump completed on 2020-02-14  1:33:18
