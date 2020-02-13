@@ -5,6 +5,22 @@ angular.module('ProductModule', ["CreateProductModule"]).
 
         $scope.pageItems = 5;
         $scope.selectedContent = '';
+        let selectedContentForDelete = [];
+
+        const deleteOperation = function (records) {
+          debugger
+
+          $http.delete('/services/product/' + JSON.stringify(records))
+            .then(result => {
+              $scope.loadDatas();
+            }).catch(err => {
+              toastFactory.showSimpleToast(err.data.message);
+              if (err.data.auth && err.data.auth === false) {
+                window.location.href = "#/login";
+              }
+            });
+        }
+
         $scope.headers = [
           {
             contentField: 'default_image',
@@ -43,11 +59,20 @@ angular.module('ProductModule', ["CreateProductModule"]).
         };
         $scope.loadDatas();
         $scope.selectOperation = function (checked, selectedContent) {
-          console.log('Is it checked ? ' + checked);
-          console.log(selectedContent);
+          debugger
+          if (checked)
+            selectedContentForDelete.push(selectedContent.product_id);
+          else {
+            selectedContentForDelete.splice(selectedContentForDelete.indexOf(selectedContent.product_id), 1);
+          }
         };
         $scope.doBulkDelete = function () {
-          alert('wait to I come back :) I am implementing add new product');
+          debugger
+          if (selectedContentForDelete.length === 0) {
+            toastFactory.showSimpleToast('Please select some item for delete.');
+            return;
+          }
+          deleteOperation(selectedContentForDelete);
         };
         $scope.doSearch = function (productName) {
           $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
@@ -71,20 +96,8 @@ angular.module('ProductModule', ["CreateProductModule"]).
             targetEvent: $event,
             template: '<md-bottom-sheet class="md-grid"><span flex></span><md-button aria-label="Delete" ng-click="deleteItem()"><i class="material-icons md-18">delete</i></md-button></md-bottom-sheet>'
           }).then(function () {
-            let records = [];
-            records.push(selectedContent.product_id);
-            let items = JSON.stringify({ ids: selectedContent.product_id });
             $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
-            $http.delete('/services/product/' + records)
-              .then(result => {
-                $scope.loadDatas();
-              }).catch(err => {
-                toastFactory.showSimpleToast(err.data.message);
-                if (err.data.auth && err.data.auth === false) {
-                  window.location.href = "#/login";
-                }
-              });
+            deleteOperation(selectedContent.product_id);
           });
         };
-       
       }]);

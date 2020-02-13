@@ -171,8 +171,9 @@ module.exports = function (api) {
             })
     };
     const deleteProduct = (req, res) => {
-
-        api.models.product.destroy({ where: { product_id: req.params.ids } })
+        api.models.product.destroy({
+            where: { product_id: JSON.parse(req.params.ids) }
+        })
             .then(num => {
                 if (num === 0) {
                     res.status(404).send({
@@ -186,7 +187,7 @@ module.exports = function (api) {
             })
             .catch(err => {
                 res.status(500).send({
-                    message: "Could not delete Product "
+                    message: "Could not delete Product(s) "
                 });
             });
     };

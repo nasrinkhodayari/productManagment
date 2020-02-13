@@ -77,25 +77,25 @@
       </tr>
     </tbody>
   </table>
-  <!-- Footer / Pagination -->
-  <div class="md-table-footer" layout="row">
-    <span flex></span>
-    <span ng-show="enablePagination">
-      <!-- Previous page -->
-      <md-button aria-label="Previous" class="md-table-footer-item" ng-click="previous()"
-        ng-disabled="previousDisabled();">
-        <i class="material-icons md-18">keyboard_arrow_left</i>
+</div>
+<!-- Footer / Pagination -->
+<div class="md-table-footer" layout="row">
+  <span flex></span>
+  <span ng-show="enablePagination">
+    <!-- Previous page -->
+    <md-button aria-label="Previous" class="md-table-footer-item" ng-click="previous()"
+      ng-disabled="previousDisabled();">
+      <i class="material-icons md-18">keyboard_arrow_left</i>
+    </md-button>
+    <!-- Current page selection -->
+    <a class="md-table-page-link" href ng-repeat="page in pages">
+      <md-button aria-label="Index" class="md-primary md-table-footer-item" ng-click="selectPage(page.index)">
+        <span ng-class="{'md-table-active-page': currentPage == page.index}">{{page.index+1}}</span>
       </md-button>
-      <!-- Current page selection -->
-      <a class="md-table-page-link" href ng-repeat="page in pages">
-        <md-button aria-label="Index" class="md-primary md-table-footer-item" ng-click="selectPage(page.index)">
-          <span ng-class="{'md-table-active-page': currentPage == page.index}">{{page.index+1}}</span>
-        </md-button>
-      </a>
-      <!-- Next page -->
-      <md-button aria-label="Next" class="md-table-footer-item" ng-click="next()" ng-disabled="nextDisabled();">
-        <i class="material-icons md-18">keyboard_arrow_right</i>
-      </md-button>
-    </span>
-  </div>
+    </a>
+    <!-- Next page -->
+    <md-button aria-label="Next" class="md-table-footer-item" ng-click="next()" ng-disabled="nextDisabled();">
+      <i class="material-icons md-18">keyboard_arrow_right</i>
+    </md-button>
+  </span>
 </div>

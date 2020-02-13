@@ -76,7 +76,7 @@ angular.module('CreateProductModule', []).
                     $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
                     $http.post('/services/product', $scope.productInfo)
                         .then(result => {
-                            toastFactory.showSimpleToast(result.data.message);
+                            toastFactory.showSimpleToast('Product added succesfully');
                             window.location.href = '#/list';
                         }).catch(err => {
                             toastFactory.showSimpleToast(err.data.message);
