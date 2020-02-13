@@ -8,11 +8,15 @@
         </section>
     </md-toolbar>
 </div>
-<h1 class="md-toolbar-tools" style="padding-left: 10%;">Add New Product</h1>
+<h1 class="md-toolbar-tools" style="padding-left: 10%;">Product Information</h1>
 <div class="create-form">
 
+    <md-container flex="50" ng-if="editMode">
+        <label>Category </label>
+        <md-span>{{productInfo.categoryName}}</md-span>
+    </md-container>
     <md-content layout-padding>
-        <form name="productForm" ng-submit="addNewProduct()">
+        <form name="productForm" ng-submit="submitProduct()">
             <div layout="row">
                 <md-input-container flex="50">
                     <label>Product Name</label>
@@ -32,14 +36,14 @@
             <div layout="row">
                 <md-input-container flex="50">
                     <label>Price</label>
-                    <input required type="number" step="any" name="price" ng-model="productInfo.price" />
+                    <input required type="text" step="any" name="price" ng-model="productInfo.price" />
                     <div ng-messages="productForm.price.$error">
                         <div ng-message="required">This is required.</div>
                     </div>
                 </md-input-container>
                 <md-input-container flex="50">
                     <label>msrp</label>
-                    <input required type="number" step="any" name="msrp" ng-model="productInfo.msrp" />
+                    <input required type="text" step="any" name="msrp" ng-model="productInfo.msrp" />
                     <div ng-messages="productForm.msrp.$error">
                         <div ng-message="required">This is required.</div>
                     </div>
@@ -54,7 +58,7 @@
                     </md-select>
                 </md-input-container>
             </div>
-            <div layout="row">
+            <div layout="row" ng-if="!editMode">
                 <md-input-container flex="25">
                     <label>Category</label>
                     <md-select name="type" ng-model="parentCategory.category_id" required

@@ -8,13 +8,38 @@ angular.module('CreateProductModule', []).
                 $scope.lastCatChildes = [];
                 $scope.productInfo = {};
                 $scope.productInfo.images = [];
+                $scope.editMode = false;
+                let selectedItem = JSON.parse(sessionStorage.getItem("selectedItem"));
 
+                if (window.location.href.split('?', 2)[1]) {
+                    if (selectedItem) {
+                        if (selectedItem.product_id == window.location.href.split('?', 2)[1]) {
+                            $scope.editMode = true;
+                            $scope.productInfo = selectedItem;
+                        } else {
+                            toastFactory.showSimpleToast('Something went wrong!');
+                            window.location.href = "#/list";
+                            $scope.editMode = true;
+                        }
+                    }
+                    $scope.editMode
+                }
+
+                const getProductImages = function () {
+
+                };
+                const checkAuthentication = function(err){
+                    if (err.data.auth === false) {
+                        window.location.href = "#/login";
+                      }
+                };
                 $scope.getMerchantsList = function () {
                     $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
                     $http.get('/services/merchants')
                         .then(result => {
                             $scope.merchantsList = result.data.body;
                         }).catch(err => {
+                            checkAuthentication(err);
                             toastFactory.showSimpleToast(err.data.message);
                             if (err.data.auth === false) {
                                 window.location.href = "#/login";
@@ -22,7 +47,6 @@ angular.module('CreateProductModule', []).
                         });
                 };
                 $scope.getMerchantsList();
-
                 $scope.getCategoriesList = function () {
                     $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
                     $http.get('/services/categories')
@@ -34,6 +58,7 @@ angular.module('CreateProductModule', []).
                                     $scope.parentCategories.push(item);
                             });
                         }).catch(err => {
+                            checkAuthentication(err);
                             toastFactory.showSimpleToast(err.data.message);
                             if (err.data.auth === false) {
                                 window.location.href = "#/login";
@@ -71,16 +96,30 @@ angular.module('CreateProductModule', []).
                     if ($scope.lastCatChildes.length === 0)
                         $scope.productInfo.category_id = catId;
                 };
-                $scope.addNewProduct = function (cate) {
-                    
+                $scope.submitProduct = function () {
                     $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
-                    $http.post('/services/product', $scope.productInfo)
-                        .then(result => {
-                            toastFactory.showSimpleToast('Product added succesfully');
-                            window.location.href = '#/list';
-                        }).catch(err => {
-                            toastFactory.showSimpleToast(err.data.message);
-                            console.log(err);
-                        });
+                    if (!$scope.editMode) {
+                        $http.post('/services/product', $scope.productInfo)
+                            .then(result => {
+                                toastFactory.showSimpleToast('Product added succesfully');
+                                window.location.href = '#/list';
+                            }).catch(err => {
+                                checkAuthentication(err);
+                                toastFactory.showSimpleToast(err.data.message);
+                                console.log(err);
+                            });
+                    } else {
+                        if (selectedItem) {
+                            $http.put('/services/product/' + selectedItem.product_id, $scope.productInfo)
+                                .then(result => {
+                                    toastFactory.showSimpleToast('Product update succesfully');
+                                    // window.location.href = '#/list';
+                                }).catch(err => {
+                                    checkAuthentication(err);
+                                    toastFactory.showSimpleToast(err.data.message);
+                                    console.log(err);
+                                });
+                        }
+                    }
                 };
             }]);

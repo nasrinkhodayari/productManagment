@@ -8,19 +8,16 @@ angular.module('ProductModule', ["CreateProductModule"]).
         let selectedContentForDelete = [];
 
         const deleteOperation = function (records) {
-          debugger
-
           $http.delete('/services/product/' + JSON.stringify(records))
             .then(result => {
               $scope.loadDatas();
             }).catch(err => {
               toastFactory.showSimpleToast(err.data.message);
-              if (err.data.auth && err.data.auth === false) {
+              if (err.data.auth === false) {
                 window.location.href = "#/login";
               }
             });
         }
-
         $scope.headers = [
           {
             contentField: 'default_image',
@@ -59,7 +56,6 @@ angular.module('ProductModule', ["CreateProductModule"]).
         };
         $scope.loadDatas();
         $scope.selectOperation = function (checked, selectedContent) {
-          debugger
           if (checked)
             selectedContentForDelete.push(selectedContent.product_id);
           else {
@@ -67,7 +63,6 @@ angular.module('ProductModule', ["CreateProductModule"]).
           }
         };
         $scope.doBulkDelete = function () {
-          debugger
           if (selectedContentForDelete.length === 0) {
             toastFactory.showSimpleToast('Please select some item for delete.');
             return;
@@ -86,18 +81,26 @@ angular.module('ProductModule', ["CreateProductModule"]).
               }
             });
         };
-        $scope.doDelete = function (selectedContent, $event) {
+        $scope.doAction = function (selectedContent, $event) {
           $mdBottomSheet.show({
             controller: function ($scope) {
               $scope.deleteItem = function () {
                 $mdBottomSheet.hide();
+                if (confirm("Are you sure to delete this item?")) {
+                  $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
+                  deleteOperation(selectedContent.product_id);
+                }
+              };
+              $scope.editItem = function () {
+                $mdBottomSheet.hide();
+                sessionStorage.setItem('selectedItem',JSON.stringify(selectedContent));
+                window.location.href = "#/create?"+selectedContent.product_id;
               };
             },
             targetEvent: $event,
-            template: '<md-bottom-sheet class="md-grid"><span flex></span><md-button aria-label="Delete" ng-click="deleteItem()"><i class="material-icons md-18">delete</i></md-button></md-bottom-sheet>'
+            template: '<md-bottom-sheet class="md-grid"><span flex></span><md-button aria-label="Delete" ng-click="deleteItem()"><i class="material-icons md-18">delete</i></md-button><md-button aria-label="Edit" ng-click="editItem()"><i class="material-icons md-18">edit</i></md-button></md-bottom-sheet>'
           }).then(function () {
-            $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
-            deleteOperation(selectedContent.product_id);
+
           });
         };
       }]);
