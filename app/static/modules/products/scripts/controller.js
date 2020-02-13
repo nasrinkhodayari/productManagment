@@ -1,83 +1,90 @@
 angular.module('ProductModule', []).
-    controller('ProductController',
-        ['$scope', '$http', 'httpRequestFactory', 'toastFactory', function ($scope, $http, httpRequestFactory, toastFactory) {
+  controller('ProductController',
+    ['$scope', '$http', 'httpRequestFactory', 'toastFactory', '$filter', '$mdBottomSheet',
+      function ($scope, $http, httpRequestFactory, toastFactory, $filter, $mdBottomSheet) {
 
-            // httpRequestFactory.httpGet('/services/product');
-            $scope.productList = [];
-            $http.get('/services/product')
-                .then(data => {
-                    $scope.productList = data.body;
-                }).catch(err => {
-                    toastFactory.showSimpleToast(err.data.message);
-                    console.log(err);
-                });
+        $scope.pageItems = 5;
+        $scope.selectedContent = '';
 
-                $scope.toppings = [
-                    { name: 'Pepperoni', wanted: true },
-                    { name: 'Sausage', wanted: false },
-                    { name: 'Black Olives', wanted: true },
-                    { name: 'Green Peppers', wanted: false }
-                  ];
-                
-                  $scope.settings = [
-                    { name: 'Wi-Fi', extraScreen: 'Wi-fi menu', icon: 'device:network-wifi', enabled: true },
-                    { name: 'Bluetooth', extraScreen: 'Bluetooth menu', icon: 'device:bluetooth', enabled: false },
-                  ];
-                
-                  $scope.messages = [
-                    {id: 1, title: "Message A", selected: false},
-                    {id: 2, title: "Message B", selected: true},
-                    {id: 3, title: "Message C", selected: true},
-                  ];
-                
-                  $scope.people = [
-                    { name: 'Janet Perkins', img: 'img/100-0.jpeg', newMessage: true },
-                    { name: 'Mary Johnson', img: 'img/100-1.jpeg', newMessage: false },
-                    { name: 'Peter Carlsson', img: 'img/100-2.jpeg', newMessage: false }
-                  ];
-                
-                  $scope.goToPerson = function(person, event) {
-                    $mdDialog.show(
-                      $mdDialog.alert()
-                        .title('Navigating')
-                        .textContent('Inspect ' + person)
-                        .ariaLabel('Person inspect demo')
-                        .ok('Neat!')
-                        .targetEvent(event)
-                    );
-                  };
-                
-                  $scope.navigateTo = function(to, event) {
-                    $mdDialog.show(
-                      $mdDialog.alert()
-                        .title('Navigating')
-                        .textContent('Imagine being taken to ' + to)
-                        .ariaLabel('Navigation demo')
-                        .ok('Neat!')
-                        .targetEvent(event)
-                    );
-                  };
-                
-                  $scope.doPrimaryAction = function(event) {
-                    $mdDialog.show(
-                      $mdDialog.alert()
-                        .title('Primary Action')
-                        .textContent('Primary actions can be used for one click actions')
-                        .ariaLabel('Primary click demo')
-                        .ok('Awesome!')
-                        .targetEvent(event)
-                    );
-                  };
-                
-                  $scope.doSecondaryAction = function(event) {
-                    $mdDialog.show(
-                      $mdDialog.alert()
-                        .title('Secondary Action')
-                        .textContent('Secondary actions can be used for one click actions')
-                        .ariaLabel('Secondary click demo')
-                        .ok('Neat!')
-                        .targetEvent(event)
-                    );
-                  };
-                
-        }]);
+        $scope.headers = [
+          {
+            contentField: 'title',
+            contentType: 'text',
+            label: 'Name'
+          }, {
+            contentField: 'categoryName',
+            contentType: 'text',
+            label: 'Category'
+          }, {
+            contentField: 'price',
+            contentType: 'text',
+            label: 'Price'
+          }, {
+            contentField: 'available',
+            contentType: 'text',
+            label: 'Status'
+          }
+        ];
+
+        $scope.loadDatas = function () {
+          $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
+          $http.get('/services/product')
+            .then(result => {
+              $scope.contents = result.data.body;
+            }).catch(err => {
+              toastFactory.showSimpleToast(err.data.message);
+              if (err.data.auth === false) {
+                window.location.href = "#/login";
+              }
+            });
+        };
+        $scope.loadDatas();
+
+        $scope.selectOperation = function (checked, selectedContent) {
+          console.log('Is it checked ? ' + checked);
+          console.log(selectedContent);
+        };
+        $scope.openNewProductForm = function () {
+          window.location.href = "#/create";
+        };
+        $scope.doBulkDelete = function () {
+          alert('wait to I come back :) I am implementing add new product');
+        };
+        $scope.doSearch = function (productName) {
+          $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
+          $http.get('/services/product/' + productName)
+            .then(result => {
+              $scope.contents = result.data.body;
+            }).catch(err => {
+              toastFactory.showSimpleToast(err.data.message);
+              if (err.data.auth === false) {
+                window.location.href = "#/login";
+              }
+            });
+        };
+        $scope.doDelete = function (selectedContent, $event) {
+          $mdBottomSheet.show({
+            controller: function ($scope) {
+              $scope.deleteItem = function () {
+                $mdBottomSheet.hide();
+              };
+            },
+            targetEvent: $event,
+            template: '<md-bottom-sheet class="md-grid"><span flex></span><md-button aria-label="Delete" ng-click="deleteItem()"><i class="material-icons md-18">delete</i></md-button></md-bottom-sheet>'
+          }).then(function () {
+            let records = [];
+            records.push(selectedContent.product_id);
+            let items = JSON.stringify({ ids: selectedContent.product_id });
+            $http.defaults.headers.common.Authorization = sessionStorage.getItem('token');
+            $http.delete('/services/product/' + records)
+              .then(result => {
+                $scope.loadDatas();
+              }).catch(err => {
+                toastFactory.showSimpleToast(err.data.message);
+                if (err.data.auth && err.data.auth === false) {
+                  window.location.href = "#/login";
+                }
+              });
+          });
+        };
+      }]);

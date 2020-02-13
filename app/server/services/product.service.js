@@ -10,7 +10,7 @@ module.exports = function (api) {
         productController.editProduct(req, res);
     });
     //Delete Product(s)
-    api.app.delete(productSrvRout, api.verifyTokenMiddleware, function (req, res) {
+    api.app.delete(productSrvRout + "/:ids", api.verifyTokenMiddleware, function (req, res) {
         productController.deleteProduct(req, res);
     });
     //Search Product (by Name)
@@ -22,7 +22,7 @@ module.exports = function (api) {
         productController.getAllProduct(req, res);
     });
     //Get Product by id
-    api.app.get(productSrvRout+"/getById/:id", api.verifyTokenMiddleware, function (req, res) {
+    api.app.get(productSrvRout + "/getById/:id", api.verifyTokenMiddleware, function (req, res) {
         productController.getProductById(req, res);
     });
 }

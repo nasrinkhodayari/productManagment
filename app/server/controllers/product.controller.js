@@ -171,7 +171,7 @@ module.exports = function (api) {
     };
     const deleteProduct = (req, res) => {
 
-        api.models.product.destroy({ where: { product_id: req.body.ids } })
+        api.models.product.destroy({ where: { product_id: req.params.ids } })
             .then(num => {
                 if (num === 0) {
                     res.status(404).send({
@@ -197,7 +197,7 @@ module.exports = function (api) {
         api.models.sequelize
             .query(sql_query, {
                 raw: true,
-                replacements: { search_name: `%${req.body.title}%` }
+                replacements: { search_name: `%${req.params.title}%` }
             }).spread(results => {
                 if (results.length === 0) {
                     res.status(404).send({
