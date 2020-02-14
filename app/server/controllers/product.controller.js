@@ -26,6 +26,10 @@ module.exports = function (api) {
                 value: req.body.category_id,
                 msg: 'Product category is not valid'
             }).add({
+                type: 'require',
+                value: req.body.default_image,
+                msg: 'Product default image is not valid'
+            }).add({
                 type: 'array',
                 value: req.body.images,
                 msg: 'Please insert images(s) url for your product'
@@ -108,6 +112,10 @@ module.exports = function (api) {
                 value: req.body.category_id,
                 msg: 'Product category is not valid'
             }).add({
+                type: 'require',
+                value: req.body.default_image,
+                msg: 'Product default image is not valid'
+            }).add({
                 type: 'array',
                 value: req.body.images,
                 msg: 'Please insert images(s) url for your product'
@@ -127,7 +135,8 @@ module.exports = function (api) {
                     available: req.body.available,
                     description: req.body.description,
                     merchant_id: req.body.merchant_id,
-                    category_id: req.body.category_id
+                    category_id: req.body.category_id,
+                    default_image: req.body.default_image
                 };
 
                 api.models.product.update(product, {

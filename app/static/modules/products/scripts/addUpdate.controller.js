@@ -8,8 +8,8 @@ angular.module('CreateProductModule', []).
                 $scope.firstCatChildes = [];
                 $scope.secondCatChildes = [];
                 $scope.lastCatChildes = [];
-                // $scope.productInfo = {};
-                // $scope.productInfo.images = [];
+                $scope.productInfo = {};
+                $scope.productInfo.images = [];
                 $scope.editMode = false;
 
                 const getProductImages = function (product_id) {
