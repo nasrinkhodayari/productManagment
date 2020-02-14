@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const Categories = sequelize.define("categories", {
-        categories_id: {
+        category_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true

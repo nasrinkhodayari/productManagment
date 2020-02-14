@@ -1,34 +1,73 @@
 module.exports = function (api) {
 
     const addProduct = (req, res) => {
-        //ADD VALIDATION
-
-        // Create a Product
-        const product = {
-            title: req.body.title,
-            url: req.body.url,
-            price: req.body.price,
-            msrp: req.body.msrp,
-            available: req.body.available,
-            description: req.body.description,
-            merchant_id: req.body.merchant_id,
-            category_id: req.body.category_id
-        };
-        api.models.product.create(product).then(data => {
-            if (data.product_id) {
-                addImagesToProduct(data.product_id, req.body.images, res);
-            } else {
+        // Validator posted data
+        let validator = new api.validator();
+        validator
+            .add({
+                type: 'require',
+                value: req.body.title,
+                msg: 'Product title is not valid'
+            })
+            .add({
+                type: 'require',
+                value: req.body.url,
+                msg: 'Product url is not valid'
+            }).add({
+                type: 'require',
+                value: req.body.price,
+                msg: 'Product price is not valid'
+            }).add({
+                type: 'require',
+                value: req.body.merchant_id,
+                msg: 'Product merchant is not valid'
+            }).add({
+                type: 'require',
+                value: req.body.category_id,
+                msg: 'Product category is not valid'
+            }).add({
+                type: 'require',
+                value: req.body.default_image,
+                msg: 'Product default image is not valid'
+            }).add({
+                type: 'array',
+                value: req.body.images,
+                msg: 'Please insert images(s) url for your product'
+            })
+            .validate()
+            .error(msgs => {
                 res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while creating the Product."
+                    message: msgs
                 });
-            }
-        }).catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while creating the Product."
+            }).success(() => {
+                // Create a Product
+                const product = {
+                    title: req.body.title,
+                    url: req.body.url,
+                    price: req.body.price,
+                    msrp: req.body.msrp,
+                    available: req.body.available,
+                    description: req.body.description,
+                    merchant_id: req.body.merchant_id,
+                    category_id: req.body.category_id,
+                    default_image: req.body.default_image
+                };
+                api.models.product.create(product).then(data => {
+                    if (data.product_id) {
+                        addImagesToProduct(data.product_id, req.body.images, res);
+                    } else {
+                        res.status(500).send({
+                            message:
+                                err.message || "Some error occurred while creating the Product."
+                        });
+                    }
+                }).catch(err => {
+                    res.status(500).send({
+                        message:
+                            err.message || "Some error occurred while creating the Product."
+                    });
+                });
             });
-        });
     };
     const addImagesToProduct = (productId, images, res) => {
 
@@ -48,41 +87,82 @@ module.exports = function (api) {
     };
     const editProduct = (req, res) => {
         let id = req.params.id;
-
-        // Edit a Product
-        const product = {
-            title: req.body.title,
-            url: req.body.url,
-            price: req.body.price,
-            msrp: req.body.msrp,
-            available: req.body.available,
-            description: req.body.description,
-            merchant_id: req.body.merchant_id,
-            category_id: req.body.category_id
-        };
-
-        api.models.product.update(product, {
-            where: { product_id: id }
-        })
-            .then(put => {
-                if (put[0] === 1) {
-                    if (req.body.images) {
-                        editProductImages(req.body.images, res);
-                    } else {
-                        res.send({
-                            message: "Product was updated successfully."
-                        });
-                    }
-                } else {
-                    res.send({
-                        message: "Cannot update Product. Maybe Product was not found!"
-                    });
-                }
+        // Validator posted data
+        let validator = new api.validator();
+        validator
+            .add({
+                type: 'require',
+                value: req.body.title,
+                msg: 'Product title is not valid'
             })
-            .catch(err => {
+            .add({
+                type: 'require',
+                value: req.body.url,
+                msg: 'Product url is not valid'
+            }).add({
+                type: 'require',
+                value: req.body.price,
+                msg: 'Product price is not valid'
+            }).add({
+                type: 'require',
+                value: req.body.merchant_id,
+                msg: 'Product merchant is not valid'
+            }).add({
+                type: 'require',
+                value: req.body.category_id,
+                msg: 'Product category is not valid'
+            }).add({
+                type: 'require',
+                value: req.body.default_image,
+                msg: 'Product default image is not valid'
+            }).add({
+                type: 'array',
+                value: req.body.images,
+                msg: 'Please insert images(s) url for your product'
+            })
+            .validate()
+            .error(msgs => {
                 res.status(500).send({
-                    message: "Error updating Produc"
+                    message: msgs
                 });
+            }).success(() => {
+                // Edit a Product
+                const product = {
+                    title: req.body.title,
+                    url: req.body.url,
+                    price: req.body.price,
+                    msrp: req.body.msrp,
+                    available: req.body.available,
+                    description: req.body.description,
+                    merchant_id: req.body.merchant_id,
+                    category_id: req.body.category_id,
+                    default_image: req.body.default_image
+                };
+
+                api.models.product.update(product, {
+                    where: { product_id: id }
+                })
+                    .then(put => {
+                        if (put[0] === 1) {
+                            if (req.body.images) {
+                                editProductImages(req.body.images, res);
+                            } else {
+                                res.send({
+                                    message: "Product was updated successfully."
+                                });
+                            }
+                        } else {
+                            res.send({
+                                message: "Cannot update Product. Maybe Product was not found!"
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        res.status(500).send({
+                            message: "Error updating Product!",
+                            detail: err.table
+                        });
+                    });
             });
     };
     const editProductImages = (images, res) => {
@@ -91,7 +171,7 @@ module.exports = function (api) {
                 updateOnDuplicate: ['image', 'updatedAt']
             }).then(put => {
                 res.send({
-                    message: "Product Image was updated successfully."
+                    message: "Product was updated successfully."
                 });
             }).catch(err => {
                 res.send({
@@ -100,8 +180,9 @@ module.exports = function (api) {
             })
     };
     const deleteProduct = (req, res) => {
-
-        api.models.product.destroy({ where: { product_id: req.body.ids } })
+        api.models.product.destroy({
+            where: { product_id: JSON.parse(req.params.ids) }
+        })
             .then(num => {
                 if (num === 0) {
                     res.status(404).send({
@@ -115,36 +196,103 @@ module.exports = function (api) {
             })
             .catch(err => {
                 res.status(500).send({
-                    message: "Could not delete Product "
+                    message: "Could not delete Product(s) "
                 });
             });
     };
     const searchProduct = (req, res) => {
-        let condition = req.params.title ? { title: { [api.models.Sequelize.Op.like]: `%${req.params.title}%` } } : null;
-        api.models.product.findAll({ where: condition }).
-            then(productList => {
-                res.send(productList);
-            }).catch(err => {
-                res.status(500).send({
-                    message: "Error retrieving the products"
-                });
-            })
+
+        let sql_query = "SELECT products.*,categories.title as categoryName FROM products LEFT JOIN categories on products.category_id=";
+        sql_query += "categories.category_id where products.title like :search_name";
+
+        api.models.sequelize
+            .query(sql_query, {
+                raw: true,
+                replacements: { search_name: `%${req.params.title}%` }
+            }).spread(results => {
+                if (results.length === 0) {
+                    res.status(404).send({
+                        message: "Product(s) not found"
+                    });
+                } else {
+                    res.send({ body: results });
+                }
+            });
     };
     const getAllProduct = (req, res) => {
-        api.models.product.findAll().
-            then(productList => {
-                res.send(productList);
-            }).catch(err => {
-                res.status(500).send({
-                    message: "Error retrieving the products"
-                });
+
+        let sql_query = "SELECT products.*,categories.title as categoryName FROM products LEFT JOIN categories on products.category_id=categories.category_id";
+
+        api.models.sequelize
+            .query(sql_query, {
+                raw: true,
+            }).spread(results => {
+                if (results.length === 0) {
+                    res.status(404).send({
+                        message: "Product(s) not found"
+                    });
+                } else {
+                    res.send({ body: results });
+                }
             });
+    };
+    //get product with image(s),merchantName,categorName
+    //I don`t use this method in my project
+    const getProductById = (req, res) => {
+        let sql_query = 'select products.title as productName,';
+        sql_query += 'products.url as productUrl, products.price,';
+        sql_query += 'products.msrp, products.available, products.description,';
+        sql_query += 'merchants.name as merchantName,';
+        sql_query += 'categories.title as categoryName from products Left join merchants on merchants.merchant_id=';
+        sql_query += 'products.merchant_id left join categories on categories.category_id = products.category_id where products.product_id=' + req.params.id;
+
+        api.models.sequelize
+            .query(sql_query, {
+                raw: true
+            }).spread(results => {
+                if (results.length === 0) {
+                    res.status(404).send({
+                        message: "Product not found"
+                    });
+                } else {
+                    api.models.product_images
+                        .findAll({ where: { product_id: req.params.id } })
+                        .then(data => {
+                            let productImgs = [];
+                            data.forEach(img => {
+                                productImgs.push({ image: img.image, product_id: img.product_id });
+                            });
+                            res.send({ body: results, images: productImgs });
+                        }).catch(err => {
+                            res.status(404).send({
+                                message: "Product Image(s) not found"
+                            });
+                        });
+                }
+            });
+    };
+    const getProductImagesByProductId = (req, res) => {
+        api.models.product_images.findAll({
+            where: { product_id: req.params.product_id },
+            attributes: ['image']
+        }
+        ).then(images => {
+            res.status(200).send({
+                body: images
+            });
+        }).catch(err => {
+            res.status(500).send({
+                message: "Error retrieving the Images"
+            });
+        });
     };
     return {
         addProduct: addProduct,
         editProduct: editProduct,
         deleteProduct: deleteProduct,
         searchProduct: searchProduct,
-        getAllProduct: getAllProduct
+        getAllProduct: getAllProduct,
+        getProductById: getProductById,
+        getProductImagesByProductId: getProductImagesByProductId
     };
 }

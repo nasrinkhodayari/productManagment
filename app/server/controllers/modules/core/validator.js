@@ -23,7 +23,7 @@ module.exports = function () {
 
     let validate = function () {
         invalidResults = [];
-        items.forEach(function (element) {
+        items.forEach(element => {
             let type = element.type;
             let value = element.value;
             let msg = element.msg;
@@ -35,7 +35,11 @@ module.exports = function () {
                         invalidResults.push(msg);
                     }
                     break;
-
+                case 'array':
+                    if (!value || (value && value.length === 0)) {
+                        invalidResults.push(msg);
+                    }
+                    break;
                 case 'length':
                     if (value && (value.length < min || value.length > max)) {
                         invalidResults.push(msg);
